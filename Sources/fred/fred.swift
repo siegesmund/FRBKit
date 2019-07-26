@@ -33,85 +33,85 @@ public class Fred {
         public enum Request {
             
             public enum Categories: String {
-                public case Category = "fred/category"                 // Get a category.
-                public case Children = "fred/category/children"        // Get the child categories for a specified parent category.
-                public case Related = "fred/category/related"          // Get the related categories for a category.
-                public case Series = "fred/category/series"            // Get the series in a category.
-                public case Tags = "fred/category/tags"                // Get the tags for a category.
-                public case RelatedTags = "fred/category/related_tags" // Get the related tags for a category.
+                case Category = "fred/category"                 // Get a category.
+                case Children = "fred/category/children"        // Get the child categories for a specified parent category.
+                case Related = "fred/category/related"          // Get the related categories for a category.
+                case Series = "fred/category/series"            // Get the series in a category.
+                case Tags = "fred/category/tags"                // Get the tags for a category.
+                case RelatedTags = "fred/category/related_tags" // Get the related tags for a category.
             }
             
             public enum Releases: String {
-                public case Releases = "fred/releases"                 // Get all releases of economic data.
-                public case AllReleasesDates = "fred/releases/dates"   // Get release dates for all releases of economic data.
-                public case Release = "fred/release"                   // Get a release of economic data.
-                public case ReleaseDates = "fred/release/dates"        // Get release dates for a release of economic data.
-                public case ReleaseSeries = "fred/release/series"      // Get the series on a release of economic data.
-                public case ReleaseSources = "fred/release/sources"    // Get the sources for a release of economic data.
-                public case ReleaseTags = "fred/release/tags"          // Get the tags for a release.
-                public case RelatedTags = "fred/release/related_tags"  // Get the related tags for a release.
-                public case ReleaseTables = "fred/release/tables"      // Get the release tables for a given release.
+                case Releases = "fred/releases"                 // Get all releases of economic data.
+                case AllReleasesDates = "fred/releases/dates"   // Get release dates for all releases of economic data.
+                case Release = "fred/release"                   // Get a release of economic data.
+                case ReleaseDates = "fred/release/dates"        // Get release dates for a release of economic data.
+                case ReleaseSeries = "fred/release/series"      // Get the series on a release of economic data.
+                case ReleaseSources = "fred/release/sources"    // Get the sources for a release of economic data.
+                case ReleaseTags = "fred/release/tags"          // Get the tags for a release.
+                case RelatedTags = "fred/release/related_tags"  // Get the related tags for a release.
+                case ReleaseTables = "fred/release/tables"      // Get the release tables for a given release.
             }
             
             public enum Series: String {
-                public case Series = "fred/series"                         // Get an economic data series.
-                public case Categories = "fred/series/categories"          // Get the categories for an economic data series.
-                public case Observations = "fred/series/observations"      // Get the observations or data values for an economic data series.
-                public case Release = "fred/series/release"                // Get the release for an economic data series.
-                public case Search = "fred/series/search"                  // Get economic data series that match keywords.
-                public case SearchTags = "fred/series/search/tags"         // Get the tags for a series search.
-                public case SearchRelatedTags = "fred/series/search/related_tags" // Get the related tags for a series search.
-                public case Tags = "fred/series/tags"                      // Get the tags for an economic data series.
-                public case Updates = "fred/series/updates"                // Get economic data series sorted by when observations were updated on the FRED® server.
-                public case VintageDates = "fred/series/vintagedates"           // Get the dates in history when a series' data values were revised or new data values were released.
+                case Series = "fred/series"                         // Get an economic data series.
+                case Categories = "fred/series/categories"          // Get the categories for an economic data series.
+                case Observations = "fred/series/observations"      // Get the observations or data values for an economic data series.
+                case Release = "fred/series/release"                // Get the release for an economic data series.
+                case Search = "fred/series/search"                  // Get economic data series that match keywords.
+                case SearchTags = "fred/series/search/tags"         // Get the tags for a series search.
+                case SearchRelatedTags = "fred/series/search/related_tags" // Get the related tags for a series search.
+                case Tags = "fred/series/tags"                      // Get the tags for an economic data series.
+                case Updates = "fred/series/updates"                // Get economic data series sorted by when observations were updated on the FRED® server.
+                case VintageDates = "fred/series/vintagedates"           // Get the dates in history when a series' data values were revised or new data values were released.
             }
             
             public enum Sources: String {
-                public case Sources = "fred/sources"   // Get all sources of economic data.
-                public case Source = "fred/source"     // Get a source of economic data.
-                public case Releases = "fred/source/releases"  // Get the releases for a source.
+                case Sources = "fred/sources"   // Get all sources of economic data.
+                case Source = "fred/source"     // Get a source of economic data.
+                case Releases = "fred/source/releases"  // Get the releases for a source.
             }
             
             public enum Tags: String {
-                public case Tags = "fred/tags"     // Get all tags, search for tags, or get tags by name.
-                public case RelatedTags = "fred/related_tags" // Get the related tags for one or more tags.
-                public case Series = "fred/tags/series"    // Get the series matching tags.
+                case Tags = "fred/tags"     // Get all tags, search for tags, or get tags by name.
+                case RelatedTags = "fred/related_tags" // Get the related tags for one or more tags.
+                case Series = "fred/tags/series"    // Get the series matching tags.
             }
         }
         
         // FRED request arguments
         public enum Argument: String {
-            public case APIKey = "api_key"
+            case APIKey = "api_key"
             // case FileType = "file_type" // Only support JSON
-            public case CategoryId = "category_id"
-            public case RealTimeStart = "realtime_start"
-            public case RealTimeEnd = "realtime_end"
-            public case Limit = "limit"
-            public case Offset = "offset"
-            public case OrderBy = "order_by"
-            public case SortOrder = "sort_order"
-            public case FilterVariable = "filter_variable"
-            public case FilterValue = "filter_value"
-            public case TagNames = "tag_names"
-            public case ExcludeTagNames = "exclude_tag_names"
-            public case TagGroupId = "tag_group_id"
-            public case SearchText = "search_text"
-            public case IncludeReleaseDatesWithNoData = "include_release_dates_with_no_data"
-            public case ReleaseId = "release_id"
-            public case ElementId = "element_id"
-            public case IncludeObservationValues = "include_observation_values"
-            public case ObservationDate = "observation_date"
-            public case SeriesId = "series_id"
-            public case ObservationStart = "observation_start"
-            public case ObservationEnd = "observation_end"
-            public case Units = "units"
-            public case Frequency = "frequency"
-            public case AggregationMethod = "aggregation_method"
-            public case OutputType = "output_type"
-            public case VintageDates = "vintage_dates"
-            public case TagSearchText = "tag_search_text"
-            public case SeriesSearchText = "series_search_text"
-            public case SourceId = "source_id"
+            case CategoryId = "category_id"
+            case RealTimeStart = "realtime_start"
+            case RealTimeEnd = "realtime_end"
+            case Limit = "limit"
+            case Offset = "offset"
+            case OrderBy = "order_by"
+            case SortOrder = "sort_order"
+            case FilterVariable = "filter_variable"
+            case FilterValue = "filter_value"
+            case TagNames = "tag_names"
+            case ExcludeTagNames = "exclude_tag_names"
+            case TagGroupId = "tag_group_id"
+            case SearchText = "search_text"
+            case IncludeReleaseDatesWithNoData = "include_release_dates_with_no_data"
+            case ReleaseId = "release_id"
+            case ElementId = "element_id"
+            case IncludeObservationValues = "include_observation_values"
+            case ObservationDate = "observation_date"
+            case SeriesId = "series_id"
+            case ObservationStart = "observation_start"
+            case ObservationEnd = "observation_end"
+            case Units = "units"
+            case Frequency = "frequency"
+            case AggregationMethod = "aggregation_method"
+            case OutputType = "output_type"
+            case VintageDates = "vintage_dates"
+            case TagSearchText = "tag_search_text"
+            case SeriesSearchText = "series_search_text"
+            case SourceId = "source_id"
         }
         
         var first: Bool = true
@@ -281,20 +281,20 @@ public class Fred {
         public let categories: [Category]?
         
         public enum CodingKeys: String, CodingKey {
-            public case start = "realtime_start"
-            public case end = "realtime_end"
-            public case observationStart = "observation_start"
-            public case observationEnd = "observation_end"
-            public case units
-            public case outputType = "output_type"
-            public case fileType = "file_type"
-            public case orderBy = "order_by"
-            public case sortOrder = "sort_order"
-            public case count
-            public case offset
-            public case limit
-            public case observations
-            public case categories
+            case start = "realtime_start"
+            case end = "realtime_end"
+            case observationStart = "observation_start"
+            case observationEnd = "observation_end"
+            case units
+            case outputType = "output_type"
+            case fileType = "file_type"
+            case orderBy = "order_by"
+            case sortOrder = "sort_order"
+            case count
+            case offset
+            case limit
+            case observations
+            case categories
         }
         
         func splitObservations() -> (dates: [Date], values: [Double]) {
@@ -315,15 +315,15 @@ public class Fred {
     public struct Observation: Codable {
         
         public let date: Date
-        public let start: Date
-        public let end: Date
+        public let realtimeStart: Date
+        public let realtimeEnd: Date
         public var value: String
         
         public enum CodingKeys: String, CodingKey {
-            public case date
-            public case realtimeStart = "realtime_start"
-            public case realtimeEnd = "realtime_end"
-            public case value
+            case date
+            case realtimeStart = "realtime_start"
+            case realtimeEnd = "realtime_end"
+            case value
         }
         
     }
@@ -334,9 +334,9 @@ public class Fred {
         public let parentId: Int
         
         public enum CodingKeys: String, CodingKey {
-            public case id
-            public case name
-            public case parentId = "parent_id"
+            case id
+            case name
+            case parentId = "parent_id"
         }
     }
     
