@@ -27,12 +27,12 @@ let fredAPIKey = ""
 
 public class Fred {
     
-    class Query {
+    public class Query {
         
         // FRED request paths
-        enum Request {
+        public enum Request {
             
-            enum Categories: String {
+            public enum Categories: String {
                 case Category = "fred/category"                 // Get a category.
                 case Children = "fred/category/children"        // Get the child categories for a specified parent category.
                 case Related = "fred/category/related"          // Get the related categories for a category.
@@ -41,7 +41,7 @@ public class Fred {
                 case RelatedTags = "fred/category/related_tags" // Get the related tags for a category.
             }
             
-            enum Releases: String {
+            public enum Releases: String {
                 case Releases = "fred/releases"                 // Get all releases of economic data.
                 case AllReleasesDates = "fred/releases/dates"   // Get release dates for all releases of economic data.
                 case Release = "fred/release"                   // Get a release of economic data.
@@ -53,7 +53,7 @@ public class Fred {
                 case ReleaseTables = "fred/release/tables"      // Get the release tables for a given release.
             }
             
-            enum Series: String {
+            public enum Series: String {
                 case Series = "fred/series"                         // Get an economic data series.
                 case Categories = "fred/series/categories"          // Get the categories for an economic data series.
                 case Observations = "fred/series/observations"      // Get the observations or data values for an economic data series.
@@ -66,13 +66,13 @@ public class Fred {
                 case VintageDates = "fred/series/vintagedates"           // Get the dates in history when a series' data values were revised or new data values were released.
             }
             
-            enum Sources: String {
+            public enum Sources: String {
                 case Sources = "fred/sources"   // Get all sources of economic data.
                 case Source = "fred/source"     // Get a source of economic data.
                 case Releases = "fred/source/releases"  // Get the releases for a source.
             }
             
-            enum Tags: String {
+            public enum Tags: String {
                 case Tags = "fred/tags"     // Get all tags, search for tags, or get tags by name.
                 case RelatedTags = "fred/related_tags" // Get the related tags for one or more tags.
                 case Series = "fred/tags/series"    // Get the series matching tags.
@@ -80,7 +80,7 @@ public class Fred {
         }
         
         // FRED request arguments
-        enum Argument: String {
+        public enum Argument: String {
             case APIKey = "api_key"
             // case FileType = "file_type" // Only support JSON
             case CategoryId = "category_id"
@@ -119,34 +119,34 @@ public class Fred {
         var url = "https://api.stlouisfed.org/"
         
         // Initialize with API key
-        init(apiKey: String) {
+        public init(apiKey: String) {
             _ = self.with(.APIKey, value: apiKey)
         }
         
         //
         // Initialize with request path
         //
-        init(categories: Request.Categories) {
+        public init(categories: Request.Categories) {
             url = "\(url)\(categories.rawValue)"
         }
         
-        init(releases: Request.Releases) {
+        public init(releases: Request.Releases) {
             url = "\(url)\(releases.rawValue)"
         }
         
-        init(series: Request.Series) {
+        public init(series: Request.Series) {
             url = "\(url)\(series.rawValue)"
         }
         
-        init(sources: Request.Sources) {
+        public init(sources: Request.Sources) {
             url = "\(url)\(sources.rawValue)"
         }
         
-        init(tags: Request.Tags) {
+        public init(tags: Request.Tags) {
             url = "\(url)\(tags.rawValue)"
         }
         
-        func with(_ argument: Argument, value: String) -> Query {
+        public func with(_ argument: Argument, value: String) -> Query {
             
             if first {
                 url = "\(url)?\(argument.rawValue)=\(value)"
@@ -159,10 +159,10 @@ public class Fred {
         }
         
         // MARK: - Alias for completion handler for http request
-        typealias CompletionHandler = (Fred.Result?) -> Void
+        public typealias CompletionHandler = (Fred.Result?) -> Void
         
         // MARK: - fetch: makes an API request asynchronously
-        func fetch(onCompletion: @escaping CompletionHandler) {
+        public func fetch(onCompletion: @escaping CompletionHandler) {
             
             url = "\(url)&file_type=json" // Set file_type to JSON (default is XML)
             
@@ -187,7 +187,7 @@ public class Fred {
         }
         
         // Makes a synchronous request to the API
-        func fetchSync() -> Fred.Result? {
+        public func fetchSync() -> Fred.Result? {
             
             url = "\(url)&file_type=json" // Set file_type to JSON (default is XML)
             
@@ -217,7 +217,7 @@ public class Fred {
         */
         
         // Requires a global variable 'fredAPIKey' with the api key
-        static func series(seriesId: String, start: String, end: String, onCompletion: @escaping CompletionHandler) {
+        public static func series(seriesId: String, start: String, end: String, onCompletion: @escaping CompletionHandler) {
             Fred.Query(series: .Observations)
                 .with(.APIKey, value: fredAPIKey)
                 .with(.SeriesId, value: seriesId)
@@ -231,7 +231,7 @@ public class Fred {
         }
         
         // Requires a global variable 'fredAPIKey' with the api key
-        static func seriesSync(seriesId: String, start: String, end: String) -> Fred.Result? {
+        public static func seriesSync(seriesId: String, start: String, end: String) -> Fred.Result? {
             return Fred.Query(series: .Observations)
                 .with(.APIKey, value: fredAPIKey)
                 .with(.SeriesId, value: seriesId)
@@ -263,24 +263,24 @@ public class Fred {
     }
     
     // Fred API Result struct
-    struct Result: Codable {
+    public struct Result: Codable {
         
-        let start: Date?
-        let end: Date?
-        let observationStart: Date?
-        let observationEnd: Date?
-        let units: String?
-        let outputType: Int?
-        let fileType: String?
-        let orderBy: String?
-        let sortOrder: String?
-        let count: Int?
-        let offset: Int?
-        let limit: Int?
-        let observations: [Observation]?
-        let categories: [Category]?
+        public let start: Date?
+        public let end: Date?
+        public let observationStart: Date?
+        public let observationEnd: Date?
+        public let units: String?
+        public let outputType: Int?
+        public let fileType: String?
+        public let orderBy: String?
+        public let sortOrder: String?
+        public let count: Int?
+        public let offset: Int?
+        public let limit: Int?
+        public let observations: [Observation]?
+        public let categories: [Category]?
         
-        enum CodingKeys: String, CodingKey {
+        public enum CodingKeys: String, CodingKey {
             case start = "realtime_start"
             case end = "realtime_end"
             case observationStart = "observation_start"
@@ -297,7 +297,7 @@ public class Fred {
             case categories
         }
         
-        func splitObservations() -> (dates: [Date], values: [Double]) {
+        public func splitObservations() -> (dates: [Date], values: [Double]) {
             var dates = [Date]()
             var values = [Double]()
             
@@ -312,14 +312,14 @@ public class Fred {
         }
     }
     
-    struct Observation: Codable {
+    public struct Observation: Codable {
         
-        let date: Date
-        let start: Date
-        let end: Date
-        var value: String
+        public let date: Date
+        public let start: Date
+        public let end: Date
+        public var value: String
         
-        enum CodingKeys: String, CodingKey {
+        public enum CodingKeys: String, CodingKey {
             case date
             case start = "realtime_start"
             case end = "realtime_end"
@@ -328,12 +328,12 @@ public class Fred {
         
     }
     
-    struct Category: Codable {
+    public struct Category: Codable {
         let id: Int
         let name: String
         let parentId: Int
         
-        enum CodingKeys: String, CodingKey {
+        public enum CodingKeys: String, CodingKey {
             case id
             case name
             case parentId = "parent_id"
