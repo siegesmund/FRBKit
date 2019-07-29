@@ -193,20 +193,12 @@ public class Fred {
             
             if let data = try? Data(contentsOf: URL(string: url)!)
             {
-                var fredResult: Fred.Result?
-                
-                // let jsonData = try! JSONSerialization.data(withJSONObject: data)
-                
                 let decoder = JSONDecoder()
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd"
                 decoder.dateDecodingStrategy = .formatted(dateFormatter)
                 
-                
-                
-                fredResult = try! decoder.decode(Fred.Result.self, from: data)
-                
-                return fredResult
+                return try? decoder.decode(Fred.Result.self, from: data)
             }
             
             return nil
