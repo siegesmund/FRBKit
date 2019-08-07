@@ -270,6 +270,7 @@ public class Fred {
         public let offset: Int?
         public let limit: Int?
         public let observations: [Observation]?
+        public let releases: [Release]?
         public let categories: [Category]?
         
         public enum CodingKeys: String, CodingKey {
@@ -286,6 +287,7 @@ public class Fred {
             case offset
             case limit
             case observations
+            case releases
             case categories
         }
         
@@ -320,6 +322,25 @@ public class Fred {
         
     }
     
+    public struct Release: Codable {
+        public let id: Int
+        public let realtimeStart: Date
+        public let realtimeEnd: Date
+        public let name: String
+        public let pressRelease: Bool
+        public let link: String
+
+        public enum CodingKeys: String,CodingKey {
+            case id
+            case realtimeStart = "realtime_start"
+            case realtimeEnd = "realtime_end"
+            case name
+            case pressRelease = "press_release"
+            case link
+        }
+
+    }
+
     public struct Category: Codable {
         public let id: Int
         public let name: String
