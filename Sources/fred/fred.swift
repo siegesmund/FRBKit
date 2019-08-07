@@ -165,8 +165,13 @@ public class Fred {
         public func fetch(onCompletion: @escaping CompletionHandler) {
             
             url = "\(url)&file_type=json" // Set file_type to JSON (default is XML)
-            
-            let task = URLSession.shared.dataTask(with: URL(string: url)!) { (data, response, error) in
+
+            let sessionConfig = URLSessionConfiguration.default
+            sessionConfig.timeoutIntervalForRequest = 30.0
+            sessionConfig.timeoutIntervalForResource = 60
+            let session = URLSession(configuration: sessionConfig)
+
+            let task = session.dataTask(with: URL(string: url)!) { (data, response, error) in
                 
                 var fredResult: Fred.Result?
                 
@@ -190,6 +195,8 @@ public class Fred {
         public func fetchSync() -> Fred.Result? {
             
             url = "\(url)&file_type=json" // Set file_type to JSON (default is XML)
+            
+            print(url)
             
             if let data = try? Data(contentsOf: URL(string: url)!)
             {
@@ -328,7 +335,7 @@ public class Fred {
         public let realtimeEnd: Date
         public let name: String
         public let pressRelease: Bool
-        public let link: String
+        public let link: String?
 
         public enum CodingKeys: String,CodingKey {
             case id
