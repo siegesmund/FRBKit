@@ -1,21 +1,24 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.3
 
 import PackageDescription
 
 let package = Package(
-    name: "Fred",
+    name: "FRBKit",
+    platforms: [.macOS(.v11), .iOS(.v14)],
     products: [
         .library(
-            name: "Fred",
-            targets: ["Fred"]),
+            name: "FRBKit",
+            targets: ["FRBKit"]),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/groue/CombineExpectations", from: "0.7.0")    
+    ],
     targets: [
         .target(
-            name: "Fred",
+            name: "FRBKit",
             dependencies: []),
         .testTarget(
-            name: "FredTests",
-            dependencies: ["Fred"]),
+            name: "FRBKitTests",
+            dependencies: ["FRBKit", "CombineExpectations"]),
     ]
 )

@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 /**
 // Example
@@ -21,10 +22,9 @@ Fred.Query(categories: .Category)
     }
 */
 
-let fredAPIKey = ""
+public let fredAPIKey = "34186410dc2edcfe3e4622accdc1c923"
 
 // Reference: https://research.stlouisfed.org/docs/api/fred/
-
 public class Fred {
     
     public class Query {
@@ -156,207 +156,6 @@ public class Fred {
             }
             
             return self
-        }
-        
-        // MARK: - Alias for completion handler for http request
-        public typealias CompletionHandler = (Fred.Result?) -> Void
-        
-        // MARK: - fetch: makes an API request asynchronously
-        public func fetch(onCompletion: @escaping CompletionHandler) {
-            
-            url = "\(url)&file_type=json" // Set file_type to JSON (default is XML)
-
-            let sessionConfig = URLSessionConfiguration.default
-            sessionConfig.timeoutIntervalForRequest = 30.0
-            sessionConfig.timeoutIntervalForResource = 60
-            let session = URLSession(configuration: sessionConfig)
-
-            let task = session.dataTask(with: URL(string: url)!) { (data, response, error) in
-                
-                var fredResult: Fred.Result?
-                
-                guard let data = data else { return }
-                
-                // let jsonData = try! JSONSerialization.data(withJSONObject: data)
-                
-                let decoder = JSONDecoder()
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd"
-                decoder.dateDecodingStrategy = .formatted(dateFormatter)
-                
-                fredResult = try! decoder.decode(Fred.Result.self, from: data)
-                onCompletion(fredResult)
-            }
-            
-            task.resume()
-        }
-        
-        // Makes a synchronous request to the API
-        public func fetchSync() -> Fred.Result? {
-            
-            url = "\(url)&file_type=json" // Set file_type to JSON (default is XML)
-            
-            print(url)
-            
-            if let data = try? Data(contentsOf: URL(string: url)!)
-            {
-                let decoder = JSONDecoder()
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd"
-                decoder.dateDecodingStrategy = .formatted(dateFormatter)
-                
-                return try? decoder.decode(Fred.Result.self, from: data)
-            }
-            
-            return nil
-        }
-        
-        /*
-        * Common queries
-        */
-        
-        // Requires a global variable 'fredAPIKey' with the api key
-        public static func series(seriesId: String, start: String, end: String, onCompletion: @escaping CompletionHandler) {
-            Fred.Query(series: .Observations)
-                .with(.APIKey, value: fredAPIKey)
-                .with(.SeriesId, value: seriesId)
-                .with(.RealTimeStart, value: start)
-                .with(.RealTimeEnd, value: end)
-                .fetch { response in
-                    if let r = response {
-                        onCompletion(r)
-                    }
-            }
-        }
-        
-        // Requires a global variable 'fredAPIKey' with the api key
-        public static func seriesSync(seriesId: String, start: String, end: String) -> Fred.Result? {
-            return Fred.Query(series: .Observations)
-                .with(.APIKey, value: fredAPIKey)
-                .with(.SeriesId, value: seriesId)
-                .with(.RealTimeStart, value: start)
-                .with(.RealTimeEnd, value: end)
-                .fetchSync()
-        }
-        
-        /*
-        // Fetches data, saves to SQLite and does something with it in a callback
-        static func fetchAndSaveToSQL(seriesId: String, start: String, end: String, db: Database, onCompletion: CompletionHandler?) {
-            
-            let result = seriesSync(seriesId: seriesId, start: start, end: end)
-            try! result?.observations?.forEach { row in
-                try db.execute("""
-                    INSERT INTO fred_data_series
-                        (series_id, date, start, end, value)
-                    VALUES
-                        (?, ?, ?, ?, ?)
-                    """, arguments: [])
-            }
-        }
-        
-        // Convenience method with no callback
-        static func fetchAndSaveToSQL(seriesId: String, start: String, end: String, db: Database) {
-            fetchAndSaveToSQL(seriesId: seriesId, start: start, end: end, db: db)
-        }
-        */
-    }
-    
-    // Fred API Result struct
-    public struct Result: Codable {
-        
-        public let start: Date?
-        public let end: Date?
-        public let observationStart: Date?
-        public let observationEnd: Date?
-        public let units: String?
-        public let outputType: Int?
-        public let fileType: String?
-        public let orderBy: String?
-        public let sortOrder: String?
-        public let count: Int?
-        public let offset: Int?
-        public let limit: Int?
-        public let observations: [Observation]?
-        public let releases: [Release]?
-        public let categories: [Category]?
-        
-        public enum CodingKeys: String, CodingKey {
-            case start = "realtime_start"
-            case end = "realtime_end"
-            case observationStart = "observation_start"
-            case observationEnd = "observation_end"
-            case units
-            case outputType = "output_type"
-            case fileType = "file_type"
-            case orderBy = "order_by"
-            case sortOrder = "sort_order"
-            case count
-            case offset
-            case limit
-            case observations
-            case releases
-            case categories
-        }
-        
-        func splitObservations() -> (dates: [Date], values: [Double]) {
-            var dates = [Date]()
-            var values = [Double]()
-            
-            observations?.forEach { obs in
-                if let doubleValue = Double(obs.value) {
-                    dates.append(obs.date)
-                    values.append(doubleValue)
-                }
-            }
-            
-            return (dates: dates, values: values)
-        }
-    }
-    
-    public struct Observation: Codable {
-        
-        public let date: Date
-        public let realtimeStart: Date
-        public let realtimeEnd: Date
-        public var value: String
-        
-        public enum CodingKeys: String, CodingKey {
-            case date
-            case realtimeStart = "realtime_start"
-            case realtimeEnd = "realtime_end"
-            case value
-        }
-        
-    }
-    
-    public struct Release: Codable {
-        public let id: Int
-        public let realtimeStart: Date
-        public let realtimeEnd: Date
-        public let name: String
-        public let pressRelease: Bool
-        public let link: String?
-
-        public enum CodingKeys: String,CodingKey {
-            case id
-            case realtimeStart = "realtime_start"
-            case realtimeEnd = "realtime_end"
-            case name
-            case pressRelease = "press_release"
-            case link
-        }
-
-    }
-
-    public struct Category: Codable {
-        public let id: Int
-        public let name: String
-        public let parentId: Int
-        
-        public enum CodingKeys: String, CodingKey {
-            case id
-            case name
-            case parentId = "parent_id"
         }
     }
     
